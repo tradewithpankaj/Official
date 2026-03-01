@@ -313,7 +313,7 @@ src="https://www.facebook.com/tr?id=740502998943703&ev=PageView&noscript=1"
                     <div class="logo">
                         <img id="logo-image" src="Pankaj.jpg" alt="Educational Channel Logo" loading="lazy">
                     </div>
-                    <a id="telegram-link" onclick="trackSubscribe()" class="cta" href="#">Join Free Telegram</a>
+                    <a id="telegram-link" class="cta" href="#">  Join Free Telegram </a>
                     <div class="feature-card">
                        <p class="blue"><span class="emoji">📞</span> Daily Free Nifty, Banknifty, Stock Calls! 📈🔔</p>
                     </div>
@@ -346,22 +346,36 @@ src="https://www.facebook.com/tr?id=740502998943703&ev=PageView&noscript=1"
         });
     </script>
 
-  <script>
-function trackSubscribe() {
-  // Agar already fire ho chuka hai
-  if (localStorage.getItem('subscribed') === 'true') {
-    console.log("Already subscribed event fired, not sending again.");
-    return;
-  }
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-  const eventId = 'subscribe_' + Date.now();
+  const btn = document.getElementById("telegram-link");
+  if (!btn) return;
 
-  // 🔹 Pixel Event (Browser only)
-  fbq('trackCustom', 'Subscribe', {value: 0.00, currency: 'INR'}, { eventID: eventId });
+  btn.addEventListener("click", function (e) {
 
-  // Mark as subscribed (taaki dobara na fire ho)
-  localStorage.setItem('subscribed', 'true');
-}
+    // ✅ Sirf real human click
+    if (!e.isTrusted) {
+      e.preventDefault();
+      return;
+    }
+
+    // ✅ Already tracked?
+    if (localStorage.getItem("telegram_subscribed") === "true") {
+      return;
+    }
+
+    localStorage.setItem("telegram_subscribed", "true");
+
+    const eventId = "tg_sub_" + Date.now();
+
+    if (typeof fbq !== "undefined") {
+      fbq('track', 'Subscribe', {}, { eventID: eventId });
+    }
+
+  });
+
+});
 </script>
 
 </body></html>
